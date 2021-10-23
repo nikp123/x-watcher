@@ -46,16 +46,20 @@ typedef struct xWatcher_reference {
 
 	// callback function through which you'll get notified of xwatcher events
 	// in classic C, it'll look like this:
-	// void callback_func(XWATCHER_FILE_EVENT event, const char *path, int context) {
+	// void callback_func(XWATCHER_FILE_EVENT event, const char *path, int context, void *data) {
 	// ...  // lotta code ;)
 	// } <- you can name your callback function however you'd like
 	void (*callback_func)(
 			XWATCHER_FILE_EVENT event,  // the event that occured
 			const char *path,           // what file was that (full-path)
-			int context);               // where context is going to be returned
+			int context,                // where context is going to be returned
+			void *additional_data);     // in case you need to pass a global reference or something
 
 	// used by YOUR CODE to provide additional context (if needed)
 	int context;
+
+	// in case you need to pass through additional data, such as a global reference
+	void *additional_data;
 } xWatcher_reference;
 ```
 

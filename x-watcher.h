@@ -31,20 +31,25 @@ typedef struct xWatcher_reference {
 	void (*callback_func)(
 			XWATCHER_FILE_EVENT event,
 			const char *path,
-			int context);
+			int context,
+			void *additional_data);
 	int context;
+	void *additional_data;
 } xWatcher_reference;
 
 struct file {
 	// just the file name alone
 	char *name;
 	// used for adding (additional) context in the handler (if needed)
-	int        context;
+	int  context;
+	// in case you'd like to avoid global variables
+	void *additional_data;
 
 	void (*callback_func)(
 			XWATCHER_FILE_EVENT event,
 			const char *path,
-			int context);
+			int context,
+			void *additional_data);
 } file;
 
 struct directory {
@@ -54,11 +59,14 @@ struct directory {
 	char          *path;
 	// used for adding (additional) context in the handler (if needed)
 	int           context;
+	// in case you'd like to avoid global variables
+	void          *additional_data;
 
 	void (*callback_func)(
 			XWATCHER_FILE_EVENT event,
 			const char *path,
-			int context);
+			int context,
+			void *additional_data);
 
 	#if defined(__linux__)
 		// we need additional file descriptors (per directory basis)
@@ -194,7 +202,8 @@ typedef struct x_watcher {
 						// callback
 						file->callback_func(send_event,
 											filepath,
-											file->context);
+											file->context,
+											file->additional_data);
 
 						// free that garbage
 						free(filepath);
@@ -205,7 +214,8 @@ typedef struct x_watcher {
 							send_event != XWATCHER_FILE_NONE) {
 						directory->callback_func(send_event,
 								directory->path,
-								directory->context);
+								directory->context,
+								directory->additional_data);
 					}
 				}
 
@@ -339,7 +349,8 @@ typedef struct x_watcher {
 						// callback
 						file->callback_func(send_event,
 											filepath,
-											file->context);
+											file->context,
+											file->additional_data);
 
 						// free that garbage
 						free(filepath);
@@ -350,7 +361,8 @@ typedef struct x_watcher {
 							send_event != XWATCHER_FILE_NONE) {
 						dir->callback_func(send_event,
 								dir->path,
-								dir->context);
+								dir->context,
+								dir->additional_data);
 					}
 				}
 
@@ -462,6 +474,7 @@ bool xWatcher_appendFile(
 
 		new_dir.callback_func    = NULL; // DO NOT add callbacks if it's a file
 		new_dir.context          = 0;    // context should be invalid as well
+		new_dir.additional_data  = NULL; // so should the data
 		new_dir.path             = path; // add a path to the directory
 		#if defined(__linux__)
 			new_dir.inotify_watch_fd = -1;   // invalidate inotify
@@ -496,9 +509,10 @@ bool xWatcher_appendFile(
 	struct file new_file;
 	// avoid an invalid free because this shares the memory space
 	// of the full path string
-	new_file.name          = strdup(filename);
-	new_file.context       = reference->context;
-	new_file.callback_func = reference->callback_func;
+	new_file.name            = strdup(filename);
+	new_file.context         = reference->context;
+	new_file.additional_data = reference->additional_data;
+	new_file.callback_func   = reference->callback_func;
 
 	// the the element
 	arr_add(dir->files, new_file);
@@ -640,15 +654,17 @@ bool xWatcher_appendDir(
 			return false;
 		}
 
-		dir->callback_func = reference->callback_func;
-		dir->context       = reference->context;
+		dir->callback_func   = reference->callback_func;
+		dir->context         = reference->context;
+		dir->additional_data = reference->additional_data;
 	} else {
 		// keep an eye for this one as it's on the stack
 		struct directory dir;
 
 		dir.path = path;
-		dir.callback_func = reference->callback_func;
-		dir.context       = reference->context;
+		dir.callback_func   = reference->callback_func;
+		dir.context         = reference->context;
+		dir.additional_data = reference->additional_data;
 
 		// initialize file arrays
 		arr_init(dir.files);
