@@ -625,6 +625,7 @@ bool xWatcher_appendFile(
 	#else
 		#error "Unsupported"
 	#endif
+	return true;
 }
 
 bool xWatcher_appendDir(
