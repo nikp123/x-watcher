@@ -1,7 +1,7 @@
 #include "x-watcher.h"
 
 void callback_func(XWATCHER_FILE_EVENT event,
-		const char *path, int context) {
+		const char *path, int context, void *data) {
 
 	switch(event) {
 		case XWATCHER_FILE_UNSPECIFIED:
