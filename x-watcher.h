@@ -37,7 +37,7 @@ typedef struct xWatcher_reference {
 	void *additional_data;
 } xWatcher_reference;
 
-static struct file {
+struct file {
 	// just the file name alone
 	char *name;
 	// used for adding (additional) context in the handler (if needed)
@@ -52,7 +52,7 @@ static struct file {
 			void *additional_data);
 } file;
 
-static struct directory {
+struct directory {
 	// list of files
 	struct file   *files;
 
@@ -114,7 +114,7 @@ typedef struct x_watcher {
 	#define BUF_LEN     (1024 * (EVENT_SIZE + 16))
 	#define DIRBRK      '/'
 
-	static void *__internal_xWatcherProcess(void *argument) {
+	void *__internal_xWatcherProcess(void *argument) {
 		x_watcher *watcher = (x_watcher*) argument;
 		char buffer[BUF_LEN];
 		ssize_t lenght;
@@ -245,7 +245,7 @@ typedef struct x_watcher {
 	#define BUF_LEN 1024
 	#define DIRBRK  '\\'
 
-	static void *__internal_xWatcherProcess(void *argument) {
+	void *__internal_xWatcherProcess(void *argument) {
 		x_watcher *watcher = (x_watcher*) argument;
 		struct directory *directories = watcher->directories;
 
@@ -418,7 +418,7 @@ typedef struct x_watcher {
 #endif
 
 
-static x_watcher *xWatcher_create(void) {
+x_watcher *xWatcher_create(void) {
 	x_watcher *watcher = (x_watcher*)malloc(sizeof(x_watcher));
 
 	arr_init(watcher->directories);
@@ -438,7 +438,7 @@ static x_watcher *xWatcher_create(void) {
 	return watcher;
 }
 
-static bool xWatcher_appendFile(
+bool xWatcher_appendFile(
 		x_watcher *watcher,
 		xWatcher_reference *reference) {
 	char *path = strdup(reference->path);
@@ -628,7 +628,7 @@ static bool xWatcher_appendFile(
 	return true;
 }
 
-static bool xWatcher_appendDir(
+bool xWatcher_appendDir(
 		x_watcher *watcher,
 		xWatcher_reference *reference) {
 	char *path = strdup(reference->path);
@@ -779,7 +779,7 @@ static bool xWatcher_appendDir(
 	return true;
 }
 
-static bool xWatcher_start(x_watcher *watcher) {
+bool xWatcher_start(x_watcher *watcher) {
 	// create watcher thread
 	watcher->thread_id = pthread_create(
 			&watcher->thread,
@@ -796,7 +796,7 @@ static bool xWatcher_start(x_watcher *watcher) {
 	return true;
 }
 
-static void xWatcher_destroy(x_watcher *watcher) {
+void xWatcher_destroy(x_watcher *watcher) {
 	void *ret;
 	watcher->alive = false;
 	pthread_join(watcher->thread, &ret);
