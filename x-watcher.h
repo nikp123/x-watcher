@@ -463,7 +463,7 @@ static bool xWatcher_appendFile(
 	// check against the database of (pre-existing) directories
 	for(size_t i = 0; i < arr_count(watcher->directories); i++) {
 		// paths match
-		if(strcmp(watcher->directories->path, path) == 0) {
+		if(strcmp(watcher->directories[i].path, path) == 0) {
 			dir = &watcher->directories[i];
 		}
 	}
@@ -643,7 +643,7 @@ static bool xWatcher_appendDir(
 	// check against the database of (pre-existing) directories
 	for(size_t i=0; i < arr_count(watcher->directories); i++) {
 		// paths match
-		if(strcmp(watcher->directories->path, path) == 0) {
+		if(strcmp(watcher->directories[i].path, path) == 0) {
 			dir = &watcher->directories[i];
 		}
 	}
