@@ -114,7 +114,7 @@ typedef struct x_watcher {
 	#define BUF_LEN     (1024 * (EVENT_SIZE + 16))
 	#define DIRBRK      '/'
 
-	void *__internal_xWatcherProcess(void *argument) {
+	static inline void *__internal_xWatcherProcess(void *argument) {
 		x_watcher *watcher = (x_watcher*) argument;
 		char buffer[BUF_LEN];
 		ssize_t lenght;
@@ -245,7 +245,7 @@ typedef struct x_watcher {
 	#define BUF_LEN 1024
 	#define DIRBRK  '\\'
 
-	void *__internal_xWatcherProcess(void *argument) {
+	static inline void *__internal_xWatcherProcess(void *argument) {
 		x_watcher *watcher = (x_watcher*) argument;
 		struct directory *directories = watcher->directories;
 
@@ -418,7 +418,7 @@ typedef struct x_watcher {
 #endif
 
 
-x_watcher *xWatcher_create(void) {
+static inline x_watcher *xWatcher_create(void) {
 	x_watcher *watcher = (x_watcher*)malloc(sizeof(x_watcher));
 
 	arr_init(watcher->directories);
@@ -438,7 +438,7 @@ x_watcher *xWatcher_create(void) {
 	return watcher;
 }
 
-bool xWatcher_appendFile(
+static inline bool xWatcher_appendFile(
 		x_watcher *watcher,
 		xWatcher_reference *reference) {
 	char *path = strdup(reference->path);
@@ -628,7 +628,7 @@ bool xWatcher_appendFile(
 	return true;
 }
 
-bool xWatcher_appendDir(
+static inline bool xWatcher_appendDir(
 		x_watcher *watcher,
 		xWatcher_reference *reference) {
 	char *path = strdup(reference->path);
@@ -779,7 +779,7 @@ bool xWatcher_appendDir(
 	return true;
 }
 
-bool xWatcher_start(x_watcher *watcher) {
+static inline bool xWatcher_start(x_watcher *watcher) {
 	// create watcher thread
 	watcher->thread_id = pthread_create(
 			&watcher->thread,
@@ -796,7 +796,7 @@ bool xWatcher_start(x_watcher *watcher) {
 	return true;
 }
 
-void xWatcher_destroy(x_watcher *watcher) {
+static inline void xWatcher_destroy(x_watcher *watcher) {
 	void *ret;
 	watcher->alive = false;
 	pthread_join(watcher->thread, &ret);
