@@ -398,6 +398,28 @@ typedef struct x_watcher {
 					NULL,
 					&dir->overlapped,
 					NULL);
+
+			if(!success) {
+				// get error code
+				DWORD error = GetLastError();
+				char *message;
+
+				// get error message
+				FormatMessage(
+					FORMAT_MESSAGE_ALLOCATE_BUFFER |
+					FORMAT_MESSAGE_FROM_SYSTEM |
+					FORMAT_MESSAGE_IGNORE_INSERTS,
+					NULL,
+					error,
+					MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+					(LPTSTR) &message,
+					0, NULL);
+
+				fprintf(stderr, "ReadDirectoryChangesW failed: %s\n",
+						message);
+
+				ExitProcess(error);
+			}
 		}
 		// cleanup time
 		for(size_t i = 0; i < arr_count(watcher->directories); i++) {
