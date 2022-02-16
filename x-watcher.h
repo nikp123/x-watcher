@@ -802,6 +802,8 @@ static inline bool xWatcher_appendDir(
 }
 
 static inline bool xWatcher_start(x_watcher *watcher) {
+	watcher->alive = true;
+
 	// create watcher thread
 	watcher->thread_id = pthread_create(
 			&watcher->thread,
@@ -811,10 +813,10 @@ static inline bool xWatcher_start(x_watcher *watcher) {
 
 	if(watcher->thread_id != 0) {
 		perror("pthread_create");
+		watcher->alive = false;
 		return false;
 	}
 
-	watcher->alive = true;
 	return true;
 }
 
