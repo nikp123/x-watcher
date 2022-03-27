@@ -434,6 +434,8 @@ typedef struct x_watcher {
 			CloseHandle(directory->handle);
 		}
 		arr_free(watcher->directories);
+
+		return NULL;
 	}
 #else
 	#error "Unsupported"
