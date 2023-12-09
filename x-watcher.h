@@ -482,6 +482,11 @@ static inline bool xWatcher_appendFile(
 		}
 	}
 
+	// If the directory is specifically local, treat it as such.
+	if(filename == NULL) {
+		filename = path;
+	}
+
 	struct directory *dir = NULL;
 
 	// check against the database of (pre-existing) directories
