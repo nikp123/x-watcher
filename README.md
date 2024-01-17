@@ -39,7 +39,7 @@ three data types to worry about.
  X-Watcher instance. **No touchies**, the data inside it is quite sensitive.
  * ```xWatcher_reference``` - used for defining what xWatcher will look for and
  how it will react when a event hits your desired file or directory.
-```
+```C
 typedef struct xWatcher_reference {
 	// path to the directory or file that's going to be "watched"
 	char *path;
