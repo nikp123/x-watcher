@@ -85,7 +85,7 @@ Since this program supports two backends: inotify and WinAPI, some features
 #### Functions:
 
 
- * ```Cx_watcher *xWatcher_create(void);```
+ * ```C x_watcher *xWatcher_create(void);```
 
  Creates the xWatcher instance/object
  
