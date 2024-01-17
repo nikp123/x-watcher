@@ -91,7 +91,9 @@ Since this program supports two backends: inotify and WinAPI, some features
 
  Creates the xWatcher instance/object
  
- * ```bool xWatcher_appendFile(x_watcher *watcher, xWatcher_reference *reference)```
+ * ```C
+   bool xWatcher_appendFile(x_watcher *watcher, xWatcher_reference *reference)
+   ```
 
  Takes care of adding a single file to the watch structure using the paramaters
  defined in the ```xWatcher_reference``` struct.
@@ -99,20 +101,26 @@ Since this program supports two backends: inotify and WinAPI, some features
  Return value is determines whether the xWatcher failed
  ```(true == all ok, false == fail)```
 
- * ```bool xWatcher_appendDir(x_watcher *watcher, xWatcher_reference *reference)```
+ * ```C
+   bool xWatcher_appendDir(x_watcher *watcher, xWatcher_reference *reference)
+   ```
 
  Just like ```appendFile``` takes care of adding a directory to the watcher.
 
  Same deal with it's return value ```(true == "all ok", false == "fail")```
 
- * ```bool xWatcher_start(x_watcher *watcher);```
+ * ```C
+   bool xWatcher_start(x_watcher *watcher);
+   ```
 
  Starts the watcher in the background (spawns a new thread).
 
  WILL leak memory and (possibly) hang the program if left unchecked,
  hence ```xWatcher_destroy``` exists.
 
- * ```void xWatcher_destroy(x_watcher *watcher);```
+ * ```C
+   void xWatcher_destroy(x_watcher *watcher);
+   ```
 
  Destroys the watcher instance and frees up any resources used.
 
