@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 	x_watcher *watcher = xWatcher_create();
 
 	xWatcher_reference dir;
-	dir.path = "C:\\Users\\nikp123\\Desktop\\asdf.txt";
+	dir.path = argc > 1 ? argv[1] : "C:\\Users\\nikp123\\Desktop\\asdf.txt";
 	dir.callback_func = callback_func;
 	dir.context = 1;
 
