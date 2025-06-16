@@ -251,7 +251,7 @@ typedef struct x_watcher {
 
 		// create an event list so we can still make use of the Windows API
 		HANDLE events[arr_count(directories)];
-		for(int i = 0; i < arr_count(directories); i++) {
+		for(size_t i = 0; i < arr_count(directories); i++) {
 			events[i] = directories[i].overlapped.hEvent;
 		}
 
@@ -263,7 +263,7 @@ typedef struct x_watcher {
 
 			// test which object was it
 			int object_index = -1;
-			for(int i = 0; i < arr_count(directories); i++) {
+			for(size_t i = 0; i < arr_count(directories); i++) {
 				if(result == (WAIT_OBJECT_0 + i)) {
 					object_index = i;
 					break;
