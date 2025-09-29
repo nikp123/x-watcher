@@ -1,4 +1,4 @@
-#include "x-watcher.h"
+#include <x-watcher/x-watcher.h>
 
 void callback_func(XWATCHER_FILE_EVENT event,
 		const char *path, int context, void *data) {
