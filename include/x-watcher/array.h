@@ -16,10 +16,10 @@ struct _ArrayHeader {
 
 #define arr_init_n(a, n) do { \
    struct _ArrayHeader *header; \
-   header = malloc(sizeof(*header) + (sizeof(*(a)) * (n))); \
+   header = (struct _ArrayHeader*)malloc(sizeof(*header) + (sizeof(*(a)) * (n))); \
    header->count    = 0; \
    header->capacity = (n); \
-   (a) = (void*)(header + 1); \
+   (a) = (__typeof__(a))((void*)(header + 1)); \
 } while(0)
 
 #define arr_count(a)    (_arr_header(a)->count)
@@ -32,8 +32,9 @@ struct _ArrayHeader {
    if(n <= arr_capacity(a)) break; \
    struct _ArrayHeader *header = _arr_header(a); \
    header->capacity = n; \
-   (a) = (void*)((struct _ArrayHeader*)realloc( \
-      header, sizeof(*header) + (sizeof(*(a)) * (n))) + 1); \
+   header = (struct _ArrayHeader*)realloc( \
+      header, sizeof(*header) + (sizeof(*(a)) * (n))); \
+   (a) = (__typeof__(a))((void*)(header + 1)); \
 } while(0)
 
 #define arr_resize(a, n) do { \
@@ -63,15 +64,13 @@ struct _ArrayHeader {
 } while(0)
 
 #define arr_find(a, val, idx) do { \
-   *idx = -1; \
+   *(idx) = -1; \
    for(size_t i = 0; i < arr_count((a)); i++) { \
       if((a)[i] == val) { \
-         *idx = i; \
+         *(idx) = (int)i; \
          break; \
       } \
    } \
 } while(0)
 
-#endif
-
-
+#endif // ARRAY_H
