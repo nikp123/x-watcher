@@ -50,7 +50,7 @@ struct file {
 			const char *path,
 			int context,
 			void *additional_data);
-} file;
+};
 
 struct directory {
 	// list of files
@@ -78,7 +78,7 @@ struct directory {
 	#else
 		#error "Unsupported"
 	#endif
-} directory;
+};
 
 typedef struct x_watcher {
 	struct directory *directories;
