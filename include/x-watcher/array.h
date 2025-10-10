@@ -67,7 +67,7 @@ struct _ArrayHeader {
    *(idx) = -1; \
    for(size_t i = 0; i < arr_count((a)); i++) { \
       if((a)[i] == val) { \
-         *(idx) = (int)i; \
+         *(idx) = (__typeof__(*idx)) i; \
          break; \
       } \
    } \
