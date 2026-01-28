@@ -191,7 +191,7 @@ typedef struct x_watcher {
 					send_event = XWATCHER_DIRECTORY_CONTENT_CRETAED;
 				if(event->mask & IN_DELETE)
 					send_event = XWATCHER_DIRECTORY_CONTENT_REMOVED;
-				if(event->mask & IN_MOVED)
+				if(event->mask & IN_MOVE)
 					send_event = XWATCHER_DIRECTORY_CONTENT_MOVED;
 
 				// file found(?)
